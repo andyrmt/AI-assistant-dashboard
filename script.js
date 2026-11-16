@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const pageContent3 = document.getElementById('page-content-3');
     const buttonReturn = document.getElementById('button-return');
 
-    // ✨ NOUVEAU : Stack pour l'historique des pages
+    // Stack pour l'historique des pages
     let pageHistory = [];
     let currentPage = null;
 
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateReturnButton();
     }
 
-    // ✨ NOUVEAU : Fonction pour revenir à la page précédente
+    // Fonction pour revenir à la page précédente
     function goBack() {
         if (pageHistory.length > 0) {
             // Récupérer la dernière page de l'historique
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ✨ NOUVEAU : Mettre à jour la visibilité du bouton retour
+    // Mettre à jour la visibilité du bouton retour
     function updateReturnButton() {
         // Le bouton est visible seulement sur page 3 ET s'il y a un historique
         if (currentPage === 3 && pageHistory.length > 0) {
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     link2.addEventListener('click', () => showPage(2));
     link3.addEventListener('click', () => showPage(3));
 
-    // ✨ NOUVEAU : Événement pour le bouton retour
+    // Événement pour le bouton retour
     buttonReturn.addEventListener('click', goBack);
 
     // Afficher la page 1 par défaut au chargement
@@ -271,16 +271,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
         
+/* ============================================================
+   TEXTAREA + MOBILE : hauteur visible, clavier, anti-scroll
+   ============================================================ */
 document.addEventListener("DOMContentLoaded", function () {
     const textarea = document.getElementById('mainTextarea');
     const sendBtn = document.getElementById('sendBtn');
 
-    // Fonction pour ajuster automatiquement la hauteur SANS SCROLLER
+    const vv = window.visualViewport;
+    const root = document.documentElement;
+    const isMobile = () => window.innerWidth < 768;
+
+    // Ajuste la hauteur du textarea selon le contenu
     function autoResize() {
         textarea.style.height = 'auto';
 
-        // NOUVEAU : plafond plus bas sur mobile pour ne pas écraser le welcome text
-        const maxHeight = window.innerWidth < 768 ? 140 : 300;
+        // plafond plus bas sur mobile pour ne pas écraser le welcome text
+        const maxHeight = isMobile() ? 140 : 300;
         const newHeight = Math.min(textarea.scrollHeight, maxHeight);
         textarea.style.height = newHeight + 'px';
         textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
@@ -309,13 +316,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     autoResize();
 
-    /* ============================================================
-       NOUVEAU : remet l'écran à zéro quand le clavier iOS se ferme
-       ============================================================ */
-    const vv = window.visualViewport;
-    const root = document.documentElement;
-
+    // ---- Hauteur réellement visible (clavier exclu) ----
     function syncViewport() {
+        if (!isMobile()) return;
+
         const h = vv ? vv.height : window.innerHeight;
         const top = vv ? vv.offsetTop : 0;
 
@@ -333,13 +337,34 @@ document.addEventListener("DOMContentLoaded", function () {
         vv.addEventListener('resize', syncViewport);
         vv.addEventListener('scroll', syncViewport);
     }
+    window.addEventListener('resize', syncViewport);
     window.addEventListener('orientationchange', () => setTimeout(syncViewport, 300));
 
     textarea.addEventListener('focus', () => {
-        setTimeout(syncViewport, 100);
-        setTimeout(syncViewport, 400);   // iOS anime l'ouverture du clavier
+        setTimeout(syncViewport, 50);
+        setTimeout(syncViewport, 350);   // fin de l'animation du clavier iOS
     });
     textarea.addEventListener('blur', () => setTimeout(syncViewport, 100));
+
+    // ---- Anti-scroll : annule le glissement sur la page chat uniquement ----
+    document.addEventListener('touchmove', (e) => {
+        if (!isMobile()) return;
+        const page = e.target.closest('#page-content-1');
+        if (!page) return;                       // pages Explore / Pricing : scroll normal
+
+        // le textarea peut défiler seulement s'il déborde vraiment
+        if (e.target === textarea && textarea.scrollHeight > textarea.clientHeight) return;
+
+        e.preventDefault();
+    }, { passive: false });
+
+    // ---- Toucher la bannière Pro Plan / zone input ouvre le clavier ----
+    const areaInput = document.querySelector('#content .area-input');
+    if (areaInput) {
+        areaInput.addEventListener('click', (e) => {
+            if (!e.target.closest('button, a, textarea')) textarea.focus();
+        });
+    }
 
     syncViewport();
 });
@@ -885,7 +910,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get the width of one slide including margin
         const slideElement = document.querySelector('.carousel-slide');
         const slideWidth = slideElement.offsetWidth;
-        const slideMargin = 32; // 2rem = 32px
+        // marge réelle du slide (32px sur desktop, 16px sur mobile)
+        const slideMargin = parseFloat(getComputedStyle(slideElement).marginRight) || 32;
         const totalSlideWidth = slideWidth + slideMargin;
 
         // Calculate translation
