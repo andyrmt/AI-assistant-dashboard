@@ -966,30 +966,213 @@ textarea {
 
 
 /* Responsive adjustments */ 
-@media (max-width: 1536px) {
-    .robot-chat {
-        display: none;
-    }
+/* ============================================================
+   RESPONSIVE MOBILE  (iPhone / Samsung)
+   ============================================================ */
+
+/* garde ces deux-là tels quels */
+@media (max-width: 1536px) { .robot-chat { display: none; } }
+@media (max-width: 1280px) { .action-btns { display: none; } }
+
+@media (max-width: 767px) {
+
+  /* ---------- BASE : hauteur réelle sur iPhone (barre Safari) ---------- */
+  html, body { height: 100%; }
+  body { height: 100dvh; }
+  .h-screen { height: 100vh; height: 100dvh; }
+  .robot-chat, .card-hover { display: none; }
+
+  /* pas de tooltips sur écran tactile */
+  .invisible.pointer-events-none { display: none; }
+
+  /* ---------- MENU MOBILE (sidebar) ---------- */
+  .mobile-sidebar { width: min(85vw, 19rem); }
+  .mobile-sidebar .font-medium { font-size: .9rem; }
+
+  /* ---------- PAGE 1 : CHAT ---------- */
+  /* header */
+  .page-content-1 > div:first-child { padding: .75rem 1rem; }
+  .page-content-1 > div:first-child .text-sm { font-size: .8rem; }
+  #link3 { padding: .4rem .8rem; font-size: .7rem; }
+
+  /* zone principale : on laisse le footer visible */
+  #content, #skeleton {
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: .5rem 1rem 0;
+  }
+
+  /* welcome text réduit */
+  #content h1,
+  #content .text-4xl { font-size: 1.6rem; line-height: 1.2; }
+  #content .text-4xl svg { width: 1.8rem; height: 1.8rem; }
+  #content .max-w-4xl { margin-bottom: .5rem; gap: .25rem; }
+  #skeleton .skeleton.h-12 { height: 1.8rem; }
+
+    #content:not(.hidden),
+  #skeleton:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* centre à la verticale */
+    align-items: center;       /* centre à l'horizontale */
+    text-align: center;
+    padding: 0 1rem 9rem;      /* 9rem en bas = hauteur de l'input + bannière Pro Plan */
+  }
+
+  #content .max-w-4xl,
+  #skeleton .max-w-4xl {
+    margin: 0;
+    align-items: center;
+  }
+
+  /* la ligne "Hi Apexity, Ready to" centrée aussi */
+  #content .max-w-4xl > div {
+    justify-content: center;
+  }
+
+  /* bloc input + bannière Pro Plan */
+  .area-input {
+    bottom: .5rem;
+    width: calc(100% - 1.5rem);
+    padding-top: .25rem;
+    padding-left: .35rem;
+    padding-right: .35rem;
+    border-radius: 1.5rem;
+  }
+  .area-input > div:first-child {          /* bannière "Unlock more with Pro Plan" */
+    padding: .35rem .6rem;
+    font-size: .68rem;
+  }
+  .area-input > div:first-child svg { width: .8rem; height: .8rem; }
+  .area-input > div:first-child .text-xs,
+  .area-input > div:first-child .text-sm { font-size: .68rem; }
+
+   .area-input textarea,
+  #mainTextarea {
+    font-size: 16px;            /* le texte tapé reste à 16px (sinon iOS zoome au focus) */
+  }
+
+  #mainTextarea::placeholder {
+    font-size: .85rem;          /* placeholder réduit */
+  }
+
+  .area-input > div.bg-white {
+    padding: .5rem .6rem;
+    margin-bottom: .4rem;
+    border-radius: 1.1rem;
+  }
+  .area-input > div.bg-white > div:first-child { margin-bottom: 0; }
+  .area-input textarea { font-size: 16px; }   /* 16px = pas de zoom auto iOS */
+  #voiceBtn { padding: .5rem; }
+  #sendBtn { width: 2.2rem; height: 2.2rem; }
+  #sendBtn svg { width: 1.2rem; height: 1.2rem; }
+
+  /* menus déroulants du input */
+  .dropdown-more, .dropdown-menu { width: min(18rem, calc(100vw - 2rem)); }
+  .dropdown-more .group > div.absolute {   /* sous-menu "Add to project" */
+    left: auto; right: 0; top: auto; bottom: 100%;
+    margin: 0 0 .5rem 0; width: 14rem;
+  }
+
+  /* mini footer "Apexity is an AI..." */
+  .page-content-1 > div:last-child {
+    padding: .25rem .5rem max(.25rem, env(safe-area-inset-bottom));
+  }
+  .page-content-1 > div:last-child span { font-size: .65rem; text-align: center; }
+
+  /* ---------- PAGE 2 : EXPLORE ---------- */
+  #page-content-2 { overflow-x: hidden; }
+  #page-content-2 .px-32,
+  #page-content-2 .px-14 { padding-left: 1rem; padding-right: 1rem; }
+  #page-content-2 .p-16 { padding: 1.5rem; }
+  #page-content-2 section.py-20 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  #page-content-2 section.py-14 { padding-top: 2rem; padding-bottom: 2rem; }
+  #page-content-2 section.py-20 > .max-w-7xl { padding: 0 1rem; }
+
+  /* hero */
+  #page-content-2 main { padding: 0 1rem; }
+  #page-content-2 main > .grid { grid-template-columns: 1fr; gap: 2rem; }
+  #page-content-2 header { flex-direction: column; align-items: flex-start; gap: .75rem; padding: 0 0 .5rem; }
+  #page-content-2 nav { flex-wrap: wrap; }
+  #page-content-2 nav > div { padding: .35rem .7rem; font-size: .75rem; }
+  #page-content-2 nav svg { width: 1rem; height: 1rem; }
+  #page-content-2 h1.text-7xl { font-size: 2.4rem; margin-bottom: 1rem; }
+  #page-content-2 .text-lg { font-size: 1rem; }
+  #page-content-2 .mt-12 { margin-top: 1.25rem; }
+  #page-content-2 .mb-10 { margin-bottom: 1.25rem; }
+  .btn-one, .btn-second { padding: 12px 20px; font-size: 14px; }
+  .progress-bar-container { width: 100%; }
+
+  .hero-bg { height: 440px; }
+  .chatbox-container {
+    width: calc(100% - 1.5rem);
+    right: .75rem;
+    padding: .5rem;
+    max-height: 90%;
+  }
+  .message-bubble { max-width: 80%; font-size: .8rem; padding: 8px 12px; }
+  .unlock-badge { padding: 8px 12px; bottom: 36px; }
+  .nav-dots { right: 16px; bottom: 16px; }
+
+  /* "Build with Apexity AI" */
+  #page-content-2 .text-3xl { font-size: 1.5rem; }
+
+  /* logos partenaires */
+  #page-content-2 .grid-cols-5 { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+  #page-content-2 .grid-cols-5 > div { padding: .75rem; min-height: 64px; }
+  #page-content-2 .grid-cols-5 svg { width: auto; max-width: 70%; height: 36px; }
+
+  /* sections sombres */
+  #page-content-2 .text-5xl { font-size: 1.7rem; }
+  #page-content-2 .text-4xl { font-size: 1.4rem; }
+  #page-content-2 .ml-22 { display: none; }          /* flèche décorative */
+  #page-content-2 .min-h-52 { min-height: 9rem; }
+  #page-content-2 .chat-bubble .max-w-md { max-width: 100%; }
+
+  /* carousel */
+  .carousel-slide { width: calc(100% - 2rem); margin-right: 1rem; min-height: 420px; }
+  .carousel-slide .p-12 { padding: 1.5rem; }
+  .carousel-slide .w-1\/2 { width: 100%; }
+  .carousel-slide h2 { font-size: 1.4rem; margin-bottom: .75rem; }
+  .carousel-slide p { font-size: .9rem; margin-bottom: 1rem; }
+  .carousel-slide .flex.gap-4 { flex-wrap: wrap; gap: .5rem; }
+  .carousel-slide button { padding: .6rem 1rem; font-size: .8rem; }
+
+  /* testimonials */
+  .testimonials-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+  .testimonials-slide .p-12 { padding: 1rem; }
+  .testimonials-slide .flex.items-start { flex-direction: column; gap: 1rem; }
+  .testimonials-slide .min-w-\[100px\] { min-width: 0; width: 100%; }
+  .testimonials-slide img { width: 100%; height: 240px; object-fit: cover; }
+  .testimonials-slide .w-96 { width: 100%; font-size: 1.05rem; margin-bottom: 1rem; }
+  #testimonialsTrack ~ .absolute { right: .75rem; bottom: .75rem; }
+
+  /* footer */
+  footer { padding: 2.5rem 1rem; }
+
+  /* ---------- PAGE 3 : PRICING ---------- */
+  #page-content-3 { overflow-y: auto; overflow-x: hidden; }
+  #page-content-3 > .max-w-7xl { flex-shrink: 0; width: 100%; padding: 4.5rem 1rem 2rem; }
+  #button-return { width: 2.8rem; height: 2.8rem; }
+  #page-content-3 > .absolute { top: 1rem; left: 1rem; }
+  #page-content-3 .text-4xl { font-size: 1.7rem; }
+  .pricing-btn { padding: .55rem 1rem; font-size: .75rem; }
+  .pricing-container { min-height: 0; }
+  .pricing-cards { position: relative; }          /* sinon les cartes se superposent */
+  .card-abonment-hover { height: auto; }
+  .card-abonment-hover:hover { transform: none !important; }
+  #page-content-3 .text-4xl.font-bold { font-size: 2rem; }
 }
-    @media (max-width: 1280px) {
-    .action-btns {
-        display: none;
-    }
 
-}
-@media (max-width: 768px) {
-    .robot-chat, .card-hover {
-        display: none;
-    }
-    .area-input{
-        bottom: 30%;
-
-    }
-}
-    @media (max-width: 640px) {
-
-    .area-input{
-        bottom: 10%;
-
-    }
+/* ---------- très petits écrans (≤ 380px : iPhone 11 Pro, SE, petits Samsung) ---------- */
+@media (max-width: 380px) {
+  #content h1,
+  #content .text-4xl { font-size: 1.4rem; }
+  .area-input > div:first-child,
+  .area-input > div:first-child .text-xs,
+  .area-input > div:first-child .text-sm { font-size: .62rem; }
+  #page-content-2 h1.text-7xl { font-size: 2rem; }
+  .hero-bg { height: 400px; }
+  .page-content-1 > div:last-child span { font-size: .6rem; }
 }
