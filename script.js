@@ -320,14 +320,16 @@ document.addEventListener("DOMContentLoaded", function () {
     function syncViewport() {
         if (!isMobile()) return;
 
-        const h = vv ? vv.height : window.innerHeight;
-        const top = vv ? vv.offsetTop : 0;
+        // champ non focus = clavier fermé (ou en train de se fermer) : pleine hauteur direct
+        const focused = document.activeElement === textarea;
+        const h = (focused && vv) ? vv.height : window.innerHeight;
+        const top = (focused && vv) ? vv.offsetTop : 0;
 
         root.style.setProperty('--app-h', h + 'px');
         root.style.setProperty('--app-top', top + 'px');
 
         // clavier ouvert si la hauteur visible chute de plus de 25 %
-        const open = window.innerHeight - h > window.innerHeight * 0.25;
+        const open = focused && (window.innerHeight - h > window.innerHeight * 0.25);
         document.body.classList.toggle('keyboard-open', open);
 
         if (window.scrollY !== 0) window.scrollTo(0, 0);   // annule le scroll auto d'iOS
@@ -344,7 +346,13 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(syncViewport, 50);
         setTimeout(syncViewport, 350);   // fin de l'animation du clavier iOS
     });
-    textarea.addEventListener('blur', () => setTimeout(syncViewport, 100));
+    // fermeture : on remet la pleine hauteur IMMÉDIATEMENT (sans attendre la fin
+    // de l'animation du clavier), puis on re-vérifie une fois le clavier parti
+    textarea.addEventListener('blur', () => {
+        syncViewport();
+        requestAnimationFrame(syncViewport);
+        setTimeout(syncViewport, 350);
+    });
 
     // ---- Anti-scroll : annule le glissement sur la page chat uniquement ----
     document.addEventListener('touchmove', (e) => {
