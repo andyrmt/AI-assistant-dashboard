@@ -274,56 +274,58 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const textarea = document.getElementById('mainTextarea');
     const sendBtn = document.getElementById('sendBtn');
-    
+
     // Fonction pour ajuster automatiquement la hauteur SANS SCROLLER
     function autoResize() {
-        // Réinitialiser la hauteur
         textarea.style.height = 'auto';
-        
-        // Ajuster la hauteur en fonction du contenu
-        // On limite à 300px maximum
-        const maxHeight = 300;
+
+        // NOUVEAU : plafond plus bas sur mobile pour ne pas écraser le welcome text
+        const maxHeight = window.innerWidth < 768 ? 140 : 300;
         const newHeight = Math.min(textarea.scrollHeight, maxHeight);
         textarea.style.height = newHeight + 'px';
-        
-        // NE PAS SCROLLER - le texte du haut reste visible
-        // On enlève la ligne textarea.scrollTop = textarea.scrollHeight;
+        textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
     }
-    
-    // Écouter l'événement input
+
     textarea.addEventListener('input', autoResize);
-    
-    // Écouter le paste et le cut
-    textarea.addEventListener('paste', () => {
-        setTimeout(autoResize, 0);
-    });
-    
-    textarea.addEventListener('cut', () => {
-        setTimeout(autoResize, 0);
-    });
-    
+    textarea.addEventListener('paste', () => setTimeout(autoResize, 0));
+    textarea.addEventListener('cut', () => setTimeout(autoResize, 0));
+
     // Gérer l'envoi du message
     sendBtn.addEventListener('click', () => {
         const message = textarea.value.trim();
         if (message) {
             console.log('Message envoyé:', message);
-            
-            // Réinitialiser le textarea
             textarea.value = '';
             autoResize();
         }
     });
-    
-    // Permettre l'envoi avec Ctrl+Enter ou Cmd+Enter
+
+    // Ctrl+Enter ou Cmd+Enter
     textarea.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             sendBtn.click();
         }
     });
-    
-    // Initialiser la hauteur au chargement
+
     autoResize();
 
+    /* ============================================================
+       NOUVEAU : remet l'écran à zéro quand le clavier iOS se ferme
+       ============================================================ */
+    function resetScroll() {
+        window.scrollTo(0, 0);
+        document.querySelectorAll('body, .page-content-1, #content')
+            .forEach(el => (el.scrollTop = 0));
+    }
+
+    textarea.addEventListener('blur', () => {
+        setTimeout(resetScroll, 100);
+    });
+
+    // filet de sécurité : la hauteur visible change (clavier, barre Safari)
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', resetScroll);
+    }
 });
 
 // Fonction globale pour fermer tous les dropdowns SAUF celui spécifié

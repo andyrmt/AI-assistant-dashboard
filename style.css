@@ -6,7 +6,19 @@
   box-sizing: border-box;
   font-family: "Rubik", sans-serif;
 }
-        
+
+  html, body,
+  .page-content-1,
+  #content, #skeleton {
+    overflow: hidden;
+    overflow: clip;            /* clip = aucun scroll possible, même par iOS */
+  }
+   
+  body { 
+    position: fixed; 
+    inset: 0; 
+    width: 100%; 
+}
 .gradient-bg {
     background: linear-gradient(135deg, #c7d2fe 0%, #ddd6fe 30%, #F7F8FF 40%, #667eea 100%);
 }
@@ -42,7 +54,7 @@
 .card-hover:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    ;
+
 }
 
 .robot-img {
@@ -163,6 +175,36 @@ textarea {
 .action-btn {
     transition: all 0.2s ease;
 }
+
+  #content:not(.hidden),
+  #skeleton:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 .25rem;       /* plus de 9rem */
+  }
+
+  /* le welcome text prend l'espace libre et se centre dedans */
+  #content .max-w-4xl,
+  #skeleton .max-w-4xl {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0 1rem;
+  }
+
+  /* l'input n'est plus en absolute : il est dans le flux, en bas */
+  .area-input {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    flex: 0 0 auto;
+    width: calc(100% - 1.5rem);
+    margin: 0 auto;
+  }
 
 /* PAGE TRANSITION */
 .page-hidden {
@@ -973,6 +1015,45 @@ textarea {
 /* garde ces deux-là tels quels */
 @media (max-width: 1536px) { .robot-chat { display: none; } }
 @media (max-width: 1280px) { .action-btns { display: none; } }
+
+/* ============================================================
+   WELCOME TEXT CENTRÉ : écrans larges (≥ 768px)
+   ============================================================ */
+@media (min-width: 768px) {
+
+  /* :not(.hidden) pour ne pas casser ton JS qui affiche/cache #content et #skeleton */
+  #content:not(.hidden),
+  #skeleton:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;     /* centre à la verticale */
+    align-items: center;         /* centre à l'horizontale */
+    padding-top: 2rem;
+    padding-bottom: 2rem;       /* place pour l'input + bannière Pro Plan (en absolute) */
+  }
+
+  /* le bloc "Hi Apexity, Ready to Achieve Great Things?" */
+  #content .max-w-4xl,
+  #skeleton .max-w-4xl {
+    width: 100%;
+    max-width: 56rem;
+    margin: 0 auto 2rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  /* la ligne "Hi Apexity, Ready to" (était en justify-start) */
+  #content .max-w-4xl > div:first-child {
+    justify-content: center;
+  }
+
+  /* les feature cards gardent leur largeur et restent centrées dessous */
+  #content > .grid,
+  #skeleton > .grid {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
 
 @media (max-width: 767px) {
 
