@@ -7,18 +7,28 @@
   font-family: "Rubik", sans-serif;
 }
 
-  html, body,
+html, body,
   .page-content-1,
   #content, #skeleton {
     overflow: hidden;
     overflow: clip;            /* clip = aucun scroll possible, même par iOS */
-  }
-   
-  body { 
-    position: fixed; 
-    inset: 0; 
-    width: 100%; 
 }
+   
+body {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    top: var(--app-top, 0px);
+    height: var(--app-h, 100dvh);
+}
+.h-screen,
+  body > .flex {
+    height: var(--app-h, 100dvh);
+}
+body.keyboard-open .page-content-1 > div:last-child { display: none; }  /* mini footer */
+body.keyboard-open #content .max-w-4xl,
+body.keyboard-open #skeleton .max-w-4xl { display: none; }              /* welcome text */
+body.keyboard-open .area-input { margin-bottom: .5rem; }
 .gradient-bg {
     background: linear-gradient(135deg, #c7d2fe 0%, #ddd6fe 30%, #F7F8FF 40%, #667eea 100%);
 }

@@ -312,20 +312,36 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ============================================================
        NOUVEAU : remet l'écran à zéro quand le clavier iOS se ferme
        ============================================================ */
-    function resetScroll() {
-        window.scrollTo(0, 0);
-        document.querySelectorAll('body, .page-content-1, #content')
-            .forEach(el => (el.scrollTop = 0));
+    const vv = window.visualViewport;
+    const root = document.documentElement;
+
+    function syncViewport() {
+        const h = vv ? vv.height : window.innerHeight;
+        const top = vv ? vv.offsetTop : 0;
+
+        root.style.setProperty('--app-h', h + 'px');
+        root.style.setProperty('--app-top', top + 'px');
+
+        // clavier ouvert si la hauteur visible chute de plus de 25 %
+        const open = window.innerHeight - h > window.innerHeight * 0.25;
+        document.body.classList.toggle('keyboard-open', open);
+
+        if (window.scrollY !== 0) window.scrollTo(0, 0);   // annule le scroll auto d'iOS
     }
 
-    textarea.addEventListener('blur', () => {
-        setTimeout(resetScroll, 100);
+    if (vv) {
+        vv.addEventListener('resize', syncViewport);
+        vv.addEventListener('scroll', syncViewport);
+    }
+    window.addEventListener('orientationchange', () => setTimeout(syncViewport, 300));
+
+    textarea.addEventListener('focus', () => {
+        setTimeout(syncViewport, 100);
+        setTimeout(syncViewport, 400);   // iOS anime l'ouverture du clavier
     });
+    textarea.addEventListener('blur', () => setTimeout(syncViewport, 100));
 
-    // filet de sécurité : la hauteur visible change (clavier, barre Safari)
-    if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', resetScroll);
-    }
+    syncViewport();
 });
 
 // Fonction globale pour fermer tous les dropdowns SAUF celui spécifié
