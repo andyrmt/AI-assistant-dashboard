@@ -1073,7 +1073,7 @@ textarea {
   }
 
   #content h1,
-  #content .text-4xl { font-size: 1.6rem; line-height: 1.2; }
+  #content .text-4xl { font-size: 1.8rem; line-height: 1.2; }
   #content .text-4xl svg { width: 1.8rem; height: 1.8rem; }
   #skeleton .skeleton.h-12 { height: 1.8rem; }
 
