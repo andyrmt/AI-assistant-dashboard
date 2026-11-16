@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Carousel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .carousel-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+        .carousel-item {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            transform: scale(1.1);
+        }
+        .progress-segment {
+            transition: all 0.6s ease;
+        }
+        .progress-bar-fill {
+            transition: width 0.7s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 min-h-screen flex items-center justify-center p-8">
+    <div class="w-full max-w-7xl">
+        <!-- Header -->
+        <div class="mb-12">
+            <h1 class="text-5xl font-bold text-white mb-4">
+                AI Tools Designed to Enhance and<br>
+                Simplify Your Creative Workflow.
+            </h1>
+        </div>
+
+        <!-- Carousel Container -->
+        <div class="relative">
+            <!-- Cards Carousel -->
+            <div id="carousel" class="carousel-container overflow-hidden">
+                <div class="flex transition-transform duration-700 ease-out" id="carouselTrack">
+                    <!-- Card 1 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-12 shadow-2xl border border-gray-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">Stable Assistant</h2>
+                            <p class="text-gray-300 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Stable Assistant is a friendly chatbot developed by Stability AI and equipped with all our latest technologies. Create and edit images, videos, 3D with plain text.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-black px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Start Your Free Trial
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all">
+                                    Show Use Cases
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-3xl p-12 shadow-2xl border border-purple-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">Image Generation</h2>
+                            <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Create stunning visuals with state-of-the-art AI. Transform your ideas into beautiful images with just a text prompt. Perfect for designers, artists, and creators.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-purple-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Try Image AI
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-purple-800 transition-all">
+                                    View Gallery
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-blue-900 to-cyan-900 rounded-3xl p-12 shadow-2xl border border-blue-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">Video Creation</h2>
+                            <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Bring your stories to life with AI-powered video generation. Create professional-quality videos from text descriptions in minutes, not hours.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Create Video
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-800 transition-all">
+                                    Learn More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-emerald-900 to-teal-900 rounded-3xl p-12 shadow-2xl border border-emerald-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">3D Models</h2>
+                            <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Generate 3D models and assets with ease. Perfect for game developers, architects, and 3D artists. Turn concepts into tangible 3D creations.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-emerald-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Start 3D Design
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-emerald-800 transition-all">
+                                    Explore Models
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-orange-900 to-red-900 rounded-3xl p-12 shadow-2xl border border-orange-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">Audio Enhancement</h2>
+                            <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Transform your audio with AI-powered enhancement tools. Clean up recordings, generate music, and create professional soundscapes effortlessly.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-orange-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Enhance Audio
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-800 transition-all">
+                                    Listen Demos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="carousel-item min-w-full flex-shrink-0 px-4">
+                        <div class="bg-gradient-to-br from-pink-900 to-rose-900 rounded-3xl p-12 shadow-2xl border border-pink-700">
+                            <h2 class="text-4xl font-bold text-white mb-6">Code Assistant</h2>
+                            <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-2xl">
+                                Accelerate your development workflow with AI-powered code generation and debugging. Write better code faster with intelligent suggestions.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="bg-white text-pink-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                                    Start Coding
+                                </button>
+                                <button class="text-white px-8 py-4 rounded-xl font-semibold hover:bg-pink-800 transition-all">
+                                    View Examples
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center gap-6 mt-8">
+                <!-- Previous Button -->
+                <button id="prevBtn" class="nav-button bg-white rounded-full p-4 shadow-lg hover:shadow-xl opacity-0 pointer-events-none transition-opacity duration-300">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+
+                <!-- Next Button -->
+                <button id="nextBtn" class="nav-button bg-white rounded-full p-4 shadow-lg hover:shadow-xl transition-opacity duration-300">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <!-- Progress Bar -->
+                <div class="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden ml-4">
+                    <div id="progressBar" class="h-full bg-white rounded-full transition-all duration-700 ease-out" style="width: 16.66%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const totalCards = 6;
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+
+        function updateCarousel() {
+            // Translate the carousel
+            const translateX = -currentIndex * 100;
+            track.style.transform = `translateX(${translateX}%)`;
+
+            // Update progress bar - continuous line from 0 to 100%
+            const progressPercentage = ((currentIndex + 1) / totalCards) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+
+            // Update button visibility
+            if (currentIndex === 0) {
+                prevBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            if (currentIndex === totalCards - 1) {
+                nextBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                nextBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < totalCards - 1) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        // Initialize
+        updateCarousel();
+    </script>
+</body>
+</html>
