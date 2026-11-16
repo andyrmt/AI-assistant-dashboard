@@ -1129,9 +1129,10 @@ textarea {
   .page-content-1 > div:last-child span { font-size: .65rem; text-align: center; }
 
   /* ---------- CLAVIER OUVERT : on libère la place ---------- */
-  body.keyboard-open .page-content-1 > div:last-child,
-  body.keyboard-open #content .max-w-4xl,
-  body.keyboard-open #skeleton .max-w-4xl { display: none; }
+body.keyboard-open .page-content-1 > div:last-child { display: none; }
+
+body.keyboard-open #content .max-w-4xl h1,
+body.keyboard-open #content .max-w-4xl .text-4xl { font-size: 1.2rem; }
   body.keyboard-open .area-input { margin-bottom: .5rem; }
   /* ---------- PAGE 2 : EXPLORE ---------- */
   #page-content-2 { overflow-x: hidden; }
