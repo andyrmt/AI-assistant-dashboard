@@ -1133,9 +1133,6 @@ textarea {
   body.keyboard-open #content .max-w-4xl,
   body.keyboard-open #skeleton .max-w-4xl { display: none; }
   body.keyboard-open .area-input { margin-bottom: .5rem; }
-  /* transition seulement à l'OUVERTURE : la fermeture est instantanée */
-  body.keyboard-open { transition: height .15s ease-out; }
-
   /* ---------- PAGE 2 : EXPLORE ---------- */
   #page-content-2 { overflow-x: hidden; }
   #page-content-2 .px-32,

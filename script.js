@@ -281,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const vv = window.visualViewport;
     const root = document.documentElement;
     const isMobile = () => window.innerWidth < 768;
+    let kbClosing = false;   // true dès que le champ perd le focus
 
     // Ajuste la hauteur du textarea selon le contenu
     function autoResize() {
@@ -321,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isMobile()) return;
 
         // champ non focus = clavier fermé (ou en train de se fermer) : pleine hauteur direct
-        const focused = document.activeElement === textarea;
+        const focused = !kbClosing && document.activeElement === textarea;
         const h = (focused && vv) ? vv.height : window.innerHeight;
         const top = (focused && vv) ? vv.offsetTop : 0;
 
@@ -343,16 +344,25 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener('orientationchange', () => setTimeout(syncViewport, 300));
 
     textarea.addEventListener('focus', () => {
+        kbClosing = false;
         setTimeout(syncViewport, 50);
         setTimeout(syncViewport, 350);   // fin de l'animation du clavier iOS
     });
     // fermeture : on remet la pleine hauteur IMMÉDIATEMENT (sans attendre la fin
     // de l'animation du clavier), puis on re-vérifie une fois le clavier parti
     textarea.addEventListener('blur', () => {
+        kbClosing = true;          // plus aucun délai : pleine hauteur tout de suite
         syncViewport();
         requestAnimationFrame(syncViewport);
-        setTimeout(syncViewport, 350);
     });
+
+    // iOS attend ~300 ms avant de retirer le focus après un tap à côté du champ.
+    // On le retire nous-mêmes dès le toucher (touchstart) : le clavier part tout de suite.
+    document.addEventListener('touchstart', (e) => {
+        if (!isMobile() || document.activeElement !== textarea) return;
+        if (e.target.closest('#sendBtn, #voiceBtn, .more-button, .dropdown-more, .menu-button, .dropdown-menu, textarea')) return;
+        textarea.blur();
+    }, { passive: true });
 
     // ---- Anti-scroll : annule le glissement sur la page chat uniquement ----
     document.addEventListener('touchmove', (e) => {
